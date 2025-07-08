@@ -1,0 +1,328 @@
+openapi: 3.1.0
+info:
+  title: API Documentation - Product Services
+  version: "1.0"
+servers:
+- url: http://localhost:8081
+  description: Generated server url
+paths:
+  /v1/employees/{id}:
+    get:
+      tags:
+      - employee-controller
+      summary: Get employee by id
+      description: Returns employee by id
+      operationId: getEmployeesById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Invalid request
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/EmployeeResponse"
+        "500":
+          description: Internal server error
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/EmployeeResponse"
+    put:
+      tags:
+      - employee-controller
+      summary: Update employee
+      description: Update employee by id
+      operationId: updateEmployee
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateEmployeeRequest"
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Invalid request
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UpdateEmployeeResponse"
+        "500":
+          description: Internal server error
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UpdateEmployeeResponse"
+    delete:
+      tags:
+      - employee-controller
+      summary: Delete employee
+      description: Delete employee by id
+      operationId: deleteEmployee
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Invalid request
+        "500":
+          description: Internal server error
+  /v1/employees:
+    get:
+      tags:
+      - employee-controller
+      summary: Get all employees
+      description: Returns a list of all employees
+      operationId: getEmployees
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Invalid request
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/EmployeesResponse"
+        "500":
+          description: Internal server error
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/EmployeesResponse"
+    post:
+      tags:
+      - employee-controller
+      summary: Save employee
+      description: Save employee service
+      operationId: saveEmployee
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmployeeRequest"
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Invalid request
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SaveEmployeeResponse"
+        "500":
+          description: Internal server error
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SaveEmployeeResponse"
+  /v1/employees/search:
+    get:
+      tags:
+      - employee-controller
+      summary: Search employee
+      description: Search employee by name
+      operationId: searchEmployee
+      parameters:
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Invalid request
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Employee"
+        "500":
+          description: Internal server error
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Employee"
+components:
+  schemas:
+    UpdateEmployeeRequest:
+      type: object
+      properties:
+        firstName:
+          type: string
+          minLength: 1
+        middleName:
+          type: string
+        lastName:
+          type: string
+          minLength: 1
+        secondLastName:
+          type: string
+          minLength: 1
+        age:
+          type: integer
+          format: int32
+        sex:
+          type: string
+          minLength: 1
+        birthDay:
+          type: string
+          format: date
+        role:
+          type: string
+          enum:
+          - PROGRAMMER
+          - SCRUM
+          - ARCHITEC
+        enabled:
+          type: boolean
+      required:
+      - age
+      - enabled
+      - firstName
+      - lastName
+      - role
+      - secondLastName
+      - sex
+    Employee:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        firstName:
+          type: string
+        middleName:
+          type: string
+        lastName:
+          type: string
+        secondLastName:
+          type: string
+        age:
+          type: integer
+          format: int32
+        sex:
+          type: string
+        birthDay:
+          type: string
+          format: date
+        role:
+          type: string
+          enum:
+          - PROGRAMMER
+          - SCRUM
+          - ARCHITEC
+        systemRegistration:
+          type: string
+          format: date-time
+        enabled:
+          type: boolean
+    UpdateEmployeeResponse:
+      type: object
+      properties:
+        employee:
+          $ref: "#/components/schemas/Employee"
+    EmployeeRequest:
+      type: object
+      properties:
+        firstName:
+          type: string
+          minLength: 1
+        middleName:
+          type: string
+        lastName:
+          type: string
+          minLength: 1
+        secondLastName:
+          type: string
+          minLength: 1
+        age:
+          type: integer
+          format: int32
+        sex:
+          type: string
+          minLength: 1
+        birthDay:
+          type: string
+          format: date
+        role:
+          type: string
+          enum:
+          - PROGRAMMER
+          - SCRUM
+          - ARCHITEC
+        enabled:
+          type: boolean
+      required:
+      - age
+      - enabled
+      - firstName
+      - lastName
+      - role
+      - secondLastName
+      - sex
+    SaveEmployeeResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+    EmployeesResponse:
+      type: object
+      properties:
+        employeeList:
+          type: array
+          items:
+            $ref: "#/components/schemas/Employee"
+    EmployeeResponse:
+      type: object
+      properties:
+        employee:
+          $ref: "#/components/schemas/Employee"
