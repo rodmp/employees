@@ -31,5 +31,7 @@ http://localhost:8081/v3/api-docs.yaml
 ## Carpeta docs
 
 > archivo api-docs.yaml -> es el archivo swagger en formato yml
+
 > invex.postman_collection.json -> colección de postman
+
 > docker-compose.yml -> archivo de ejecución
