@@ -18,30 +18,30 @@ public class UpdateEmployeeRequest {
     @JsonIgnore
     private Integer id;
 
+    private String middleName;
+
     @NotEmpty
     private String firstName;
 
-    private String middleName;
+    @NotEmpty
+    private String secondLastName;
 
     @NotEmpty
     private String lastName;
 
     @NotEmpty
-    private String secondLastName;
+    private String sex;
 
     @NotNull
     private Integer age;
 
-    @NotEmpty
-    private String sex;
+    @NotNull
+    @EnumNamePattern(regexp = "PROGRAMMER|SCRUM|ARCHITECT")
+    private Role role;
 
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate birthDay;
-
-    @NotNull
-    @EnumNamePattern(regexp = "PROGRAMMER|SCRUM|ARCHITECT")
-    private Role role;
 
     @NotNull
     private Boolean enabled;

@@ -4,18 +4,13 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.invex.employees.domain.Employee;
 import com.invex.employees.domain.Role;
 import com.invex.employees.validator.EnumNamePattern;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 @Data
 @Builder
