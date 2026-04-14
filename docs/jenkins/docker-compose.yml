@@ -1,0 +1,37 @@
+# Created 2026-04-13
+# Jenkins LTS para correr pipelines (p. ej. el Jenkinsfile de la raíz del repo).
+# UI: http://localhost:8080
+#
+# SonarQube suele estar en el host en :9001 (docs/sonarqube/docker-compose.yaml). Desde dentro del contenedor
+# 127.0.0.1 NO es tu máquina: por eso SONAR_HOST_URL apunta a host.docker.internal.
+# En Linux hace falta extra_hosts (abajo). Levanta Sonar antes del stage Sonar del pipeline.
+#
+# Docker build en pipeline: se monta el socket del daemon del host.
+# Para minimizar fricción local, el contenedor corre como root.
+#
+# Primera vez: docker compose exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
+# Arranque (obligatorio --build la primera vez o cuando cambie Dockerfile):
+#   cd docs/jenkins && docker compose build --no-cache && docker compose up -d
+services:
+  jenkins:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: jenkins_invex:latest
+    container_name: jenkins_invex
+    restart: unless-stopped
+    # Desarrollo: root evita problemas de permisos sobre /var/run/docker.sock.
+    user: "0:0"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    environment:
+      JAVA_OPTS: "-Xmx512m"
+      SONAR_HOST_URL: "http://host.docker.internal:9001"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+volumes:
+  jenkins_home:

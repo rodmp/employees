@@ -1,0 +1,32 @@
+# Created 2026-04-13
+services:
+  employee-services:
+    build: ../
+    ports:
+      - "8081:8081"
+    environment:
+      DATABASE_URL: jdbc:postgresql://postgresql:5432/invex
+    depends_on:
+      postgresql:
+        condition: service_healthy
+
+  postgresql:
+    # Versión fija: "postgres:latest" (18+) cambió el layout de datos y rompe
+    # volúmenes creados con imágenes antiguas. Ver README en docs/ sobre borrar ./postgres/data.
+    image: postgres:16-bookworm
+    container_name: postgres_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres/data:/var/lib/postgresql/data
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/01-init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
+      interval: 5s
+      timeout: 5s
+      retries: 10
